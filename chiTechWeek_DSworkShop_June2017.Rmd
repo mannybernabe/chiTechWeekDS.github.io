@@ -1,0 +1,426 @@
+---
+title: "Data Science Crash Course"
+author: Manny Bernabe
+subtitle: With R 
+date: July 2017
+output: 
+  ioslides_presentation:
+    logo: logo.jpeg
+    widescreen: true
+    smaller: true
+    incremental: true
+    
+---
+
+## Manny Bernabe | Uptake Data Science Lead
+<div class="columns-2">
+  ![](logo.jpeg)
+
+  - **Twitter:** @MannyBernabe
+  - **Website:** WisdomOrData.com or mannybernabe.com
+ 
+</div>
+
+# Why Data Science
+
+# Why R Programming
+
+# Tour of R Studio
+
+#Intro to R Programming
+
+##Arithmetic with R
+
+<div class="columns-2">
+
+```{r}
+# addition
+5 + 5 
+
+# subtraction
+5 - 5
+
+# multiplication
+3 * 5
+
+# division
+(5 + 5) / 2 
+
+# Exponentiation
+3^2
+
+# Module
+24%%7
+```
+
+</div>
+
+
+
+
+
+## Classes and Objects
+
+Basic classes in R
+
+* character ("hello")
+* numeric (1.45)
+* integer (1,2,3,4)
+* complex
+* logical (True or False)
+
+
+
+## R Classes and Objects
+
+Basic Objects
+
+* vector
+* factor
+* list
+* matrix
+* data frame
+* functions
+
+
+
+
+## Variable Assignment {.build}
+```{r}
+x <- 42.5
+print(x)
+
+y=1:5
+y
+class(y)
+
+```
+
+
+## Variable Assignment {.build}
+
+```{r}
+z<-c(1,5,79)
+z
+
+z<-c("hello","sup","friend","11blue")
+
+```
+
+## Vectors and Dataframes {.build}
+
+```{r}
+a<-1:4
+b<-5:8
+c<-c("one","two","three","four")
+
+### <b>
+newDataFrame<-data.frame(a,b,c) 
+### </b>
+
+newDataFrame
+
+
+
+
+```
+
+
+## Subsetting {.build}
+```{r}
+newDataFrame$b
+newDataFrame$b[2]
+
+newDataFrame[1,3]
+
+
+```
+
+## Packages
+
+```{r,eval=FALSE}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+## Data Importing| Built-in Data Sets
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+## Data Importing| Data From the Web
+
+```{r}
+irisUrl<-url("http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data")
+iris.df<-read.csv(irisUrl, header = FALSE)
+names(iris.df) <- c("SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species")
+head(iris.df)
+```
+
+
+## Data Importing| Data From Local Drive
+
+
+```{r}
+list.files("~/Documents/ChicagoTechWeek/data/")
+cars.df<-read.csv("~/Documents/ChicagoTechWeek/data/intro_auto.csv")
+head(cars.df)
+```
+
+
+## Data Importing| Other Routes
+
+* APIs
+* Website Scrapping
+* Databases
+
+# Data Exploration
+
+## Transformations
+
+```{r}
+library(MASS)
+data(Boston)
+head(Boston)
+```
+
+## Data Wrangling | dplyr package
+```{r,message=F, warning=F}
+library(dplyr)
+```
+```{r}
+Boston<-tbl_df(Boston)
+select(Boston,crim,zn)
+
+filter(Boston,crim>40)
+arrange(Boston,lstat)
+```
+
+## Data Wrangling | dplyr package
+```{r}
+filter(Boston,crim>40)
+```
+
+## Data Wrangling | dplyr package
+```{r}
+arrange(Boston,lstat)
+```
+
+## Data Transformations
+<div class="columns-2">
+
+```{r}
+mean(Boston$rm)
+max(Boston$rm)
+min(Boston$rm)
+sd(Boston$tax)
+```
+</div>
+
+## Data Transformations | More Options
+* abs()
+* sqrt()
+* ceiling()
+* floor()
+* cos()
+* sin()
+* log()
+* exp()
+
+
+
+
+## Summary
+```{r}
+summary(Boston)
+```
+
+## Aggregation | dplyr package
+
+```{r}
+mtcars%>%
+  group_by(gear)%>%
+  summarise(average=mean(wt))
+```
+
+## More Options
+* Custom functions
+* Loops
+* Control statements
+
+
+# Visual Exploration
+
+## Plotting with R| Base R
+```{r}
+x <- c(1, 3, 6, 4, 9)
+plot(x, type="o", col="blue")
+title(main="A Simple Plot", col.main="red", font.main=4)
+```
+
+
+## Plotting with R| ggplot2
+```{r}
+library(ggplot2)
+
+ggplot(mtcars, aes(x = cyl, y = mpg)) +
+  geom_point()
+```
+
+## Plotting with R| ggplot2
+
+```{r}
+ggplot(mpg, aes(x=class, y=hwy)) + 
+    geom_boxplot(color="red", fill="orange", alpha=0.2)
+ 
+```
+
+## Plotting with R| ggplot2
+
+```{r}
+ggplot(mpg, aes(x=class, y=hwy, fill=class)) + 
+    geom_boxplot(alpha=0.3) +
+    theme(legend.position="none")
+
+```
+
+## Plotting with R| ggplot2
+```{r}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  geom_smooth()
+```
+
+## Plotting with R| ggplot2
+```{r}
+ggplot(diamonds, aes(x = carat, y = price,colour = cut)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+## Plotting with R| More Options
+* Lattice
+* Ggvis
+* Leaflet
+* Much More!
+
+# Statistics 
+
+## Statistics in R | Group Comparisons
+
+```{r}
+data(InsectSprays)
+boxplot(count ~ spray, data = InsectSprays)
+```
+
+## Statistics in R | Group Comparisons
+
+```{r,message=F, warning=F}
+library(UsingR); data(galton)
+par(mfrow=c(1,2))
+hist(galton$child,col="blue",breaks=100)
+hist(galton$parent,col="blue",breaks=100)
+```
+
+## Statistics in R | Group Comparisons
+```{r}
+t.test(father.son$sheight - father.son$fheight)
+
+```
+ 
+## Statistics in R | Much More!
+
+* Correlation
+* Randomaztion
+* Random sampling
+* Sampling models
+* Hypothesis testing
+* P-values
+* Confidence intervals
+* Bootstrapping
+
+# Machine Learning Modeling
+
+## Modelling in R | Training Versus Testing Data
+
+```{r,message=F, warning=F}
+library(caret); library(kernlab); data(spam)
+inTrain <- createDataPartition(y=spam$type,
+                               p=0.75, list=FALSE)
+training <- spam[inTrain,]
+testing <- spam[-inTrain,]
+dim(training)
+
+```
+
+
+## Modelling in R | Training
+```{r,message=F, warning=F}
+
+set.seed(999)
+modelFit <- train(type ~.,data=training, method="glm")
+modelFit
+
+
+```
+
+
+## Modelling in R | Predictions
+```{r,message=F, warning=F}
+
+predictions <- predict(modelFit,newdata=testing)
+predictions
+
+```
+
+## Modelling in R | Evaulation
+```{r,message=F, warning=F}
+confusionMatrix(predictions,testing$type)
+
+```
+
+## Modelling in R | So Much More!
+* Tree Based Models
+* Bagging 
+* Boosting
+* Naive bayes 
+* Support vector machines
+
+
+# Delivering Data Products
+
+## Delivering Data Products
+* R markdown
+* HTML
+* API
+* Shiny
+
+# Now Where?
+
+## Further Learning
+* Books: Introduction to Stastical Learning
+* Online Platforms: DataCamp
+* MOOCs: Coursera, Udacity
+* Bootcamps: Metis, NYC Data Science Academy
+* Unversity Graduate Programs: DePaul, UofC, UC Berkely, Northwestern. 
+
+## Bonus: How to win at MOOCs
+* Sample
+* Skin in the game
+* Make public
+* Wrangle freinds
+
+## Manny Bernabe | Uptake Data Science Lead
+<div class="columns-2">
+  ![](logo.jpeg)
+
+  - **Twitter:** @MannyBernabe
+  - **Website:** WisdomOrData.com or mannybernabe.com
+ 
+</div>
+
+
+
